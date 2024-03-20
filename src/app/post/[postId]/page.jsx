@@ -2,7 +2,7 @@ import { CommentForm } from "@/components/CommentForm";
 import { CommentList } from "@/components/CommentList";
 import { Vote } from "@/components/Vote";
 import { db } from "@/db";
-import Head from "next/head";
+import Link from "next/link";
 
 export async function generateMetadata({ params }) {
   const postId = params.postId;
@@ -42,15 +42,16 @@ export default async function SinglePostPage({ params }) {
 
   return (
     <div className="max-w-screen-lg mx-auto pt-4 pr-4">
-      <Head>
-        <title>{post.title}</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
+      <Link href="/" className="hover:bg-zinc-300 p-2 rounded bg-pink-300 text-black">
+        Back
+      </Link>
       <div className="flex space-x-6">
         <Vote postId={post.id} votes={post.vote_total} />
         <div className="">
           <h1 className="text-2xl">{post.title}</h1>
-          <p className="text-zinc-400 mb-4">Posted by {post.name}</p>
+          <p className="text-zinc-400 mb-4">
+            Posted by {post.name} at {post.created_at.toLocaleString()}
+          </p>
         </div>
       </div>
       <main className="whitespace-pre-wrap m-4">{post.body}</main>
