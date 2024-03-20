@@ -2,6 +2,22 @@ import { CommentForm } from "@/components/CommentForm";
 import { CommentList } from "@/components/CommentList";
 import { Vote } from "@/components/Vote";
 import { db } from "@/db";
+import Head from "next/head";
+
+export async function generateMetadata({ params }) {
+  const postId = params.postId;
+
+  const { rows: posts } = await db.query(
+    `SELECT posts.title FROM posts
+    WHERE posts.id = $1;`,
+    [postId]
+  );
+  const post = posts[0];
+
+  return {
+    title: post.title,
+  };
+}
 
 export default async function SinglePostPage({ params }) {
   const postId = params.postId;
@@ -26,6 +42,10 @@ export default async function SinglePostPage({ params }) {
 
   return (
     <div className="max-w-screen-lg mx-auto pt-4 pr-4">
+      <Head>
+        <title>{post.title}</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <div className="flex space-x-6">
         <Vote postId={post.id} votes={post.vote_total} />
         <div className="">
