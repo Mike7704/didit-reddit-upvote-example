@@ -3,6 +3,7 @@ import { CommentList } from "@/components/CommentList";
 import { Vote } from "@/components/Vote";
 import { db } from "@/db";
 import Link from "next/link";
+import Tiptap from "@/components/TipTapTextViewer";
 
 export async function generateMetadata({ params }) {
   const postId = params.postId;
@@ -54,7 +55,9 @@ export default async function SinglePostPage({ params }) {
           </p>
         </div>
       </div>
-      <main className="whitespace-pre-wrap m-4">{post.body}</main>
+      <main className="whitespace-pre-wrap m-4">
+        <Tiptap content={post.body} />
+      </main>
 
       <CommentForm postId={post.id} />
       <CommentList postId={post.id} />
